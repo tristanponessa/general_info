@@ -1,0 +1,33 @@
+ 3246  cd co
+ 3247  virtualenv env -p python3
+ 3248  . env/bin/activate
+ 3249  pip install django
+ 3250  python -m django --version
+ 3251  django-admin startproject app1_project
+ 3252  ls
+ 3253  pip install psycopg2
+ 3254  psql
+ 3255  cd ..
+ 3256  psql
+ 3257  pip install psycopg2
+ 3258  '/usr/bin/python -m pip install --upgrade pip'
+ 3259  /usr/bin/python -m pip install --upgrade pip
+ 3260  pip install psycopg2
+ 3261  sudo apt-get install libpq-dev
+ 3262  pip install psycopg2
+ 3263  psql
+ 3264  brew install postgresql
+ 3265  sudo apt-get postgresql
+ 3266  sudo apt-get -y install postgresql
+ 3267  psql
+ 3268  sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+ 3269  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+ 3270  sudo apt-get update
+ 3271  sudo apt-get -y install postgresql
+ 3272  psql
+ 3273  sudo -u postgres -i
+ 3274  psql
+ 3275  postgres -D /usr/local/pgsql/data
+ 3276  sudo -u postgres -i
+ 3277  sudo -u postgres psql
+

@@ -32,6 +32,83 @@
  3277  sudo -u postgres psql
 
 
+
+ 3285  cd django_env
+ 3286  ls
+ 3287  clear
+ 3288  . env/bin/activate
+ 3289  postgres -D /usr/local/pgsql/data
+ 3290  sudo service postgresql start
+ 3291  sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+ 3292  sudo -u postgres psql -c "CREATE DATABASE testdb;"
+ 3293  sudo service postgresql start
+(env) ➜  django_env createdb -O trponess dbname    
+createdb: could not connect to database template1: FATAL:  role "user" does not exist
+(env) ➜  django_env createdb -O user dbname    
+createdb: could not connect to database template1: FATAL:  role "user" does not exist
+(env) ➜  django_env createdb -O postgres testdb
+createdb: could not connect to database template1: FATAL:  role "user" does not exist
+(env) ➜  django_env sudo service postgresql start                     
+(env) ➜  django_env createdb -O postgres testdb  
+createdb: could not connect to database template1: FATAL:  role "user" does not exist
+(env) ➜  django_env ps -ef | grep "post"
+postgres  1035     1  0 20:09 ?        00:00:00 /usr/lib/postgresql/10/bin/postgres -D /var/lib/postgresql/10/main -c config_file=/etc/postgresql/10/main/postgresql.conf
+postgres  1076  1035  0 20:09 ?        00:00:00 postgres: 10/main: checkpointer process   
+postgres  1077  1035  0 20:09 ?        00:00:00 postgres: 10/main: writer process   
+postgres  1078  1035  0 20:09 ?        00:00:00 postgres: 10/main: wal writer process   
+postgres  1079  1035  0 20:09 ?        00:00:00 postgres: 10/main: autovacuum launcher process   
+postgres  1080  1035  0 20:09 ?        00:00:00 postgres: 10/main: stats collector process   
+postgres  1081  1035  0 20:09 ?        00:00:00 postgres: 10/main: bgworker: logical replication launcher   
+user      7084  6308  0 22:59 pts/0    00:00:00 grep --color=auto --exclude-dir=.bzr --exclude-dir=CVS --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn --exclude-dir=.idea --exclude-dir=.tox post
+(env) ➜  django_env sudo -u postgres createuser owning_user
+(env) ➜  django_env sudo -u postgres createdb -O owning_user dbname
+(env) ➜  django_env sudo -u postgres psql 
+psql (10.14 (Ubuntu 10.14-0ubuntu0.18.04.1))
+Type "help" for help.
+
+postgres=# CREATE USER trponess;
+CREATE ROLE
+postgres=# ALTER USER new_username SUPERUSER CREATEDB
+postgres-# ALTER USER trponess SUPERUSER CREATEDB
+postgres-# \du
+                                    List of roles
+  Role name  |                         Attributes                         | Member of 
+-------------+------------------------------------------------------------+-----------
+ owning_user |                                                            | {}
+ postgres    | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ trponess    |                                                            | {}
+
+postgres-# DELETE USER trponess
+postgres-# \du
+                                    List of roles
+  Role name  |                         Attributes                         | Member of 
+-------------+------------------------------------------------------------+-----------
+ owning_user |                                                            | {}
+ postgres    | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ trponess    |                                                            | {}
+
+postgres-# DELETE USER trponess;
+ERROR:  syntax error at or near "ALTER"
+LINE 2: ALTER USER trponess SUPERUSER CREATEDB
+        ^
+postgres=# ALTER USER new_username SUPERUSER CREATEDB;
+ALTER USER trponess SUPERUSER CREATEDB;
+ERROR:  role "new_username" does not exist
+ALTER ROLE
+postgres=#                                            
+ALTER USER trponess SUPERUSER CREATEDB;
+ALTER ROLE
+postgres=# \du
+                                    List of roles
+  Role name  |                         Attributes                         | Member of 
+-------------+------------------------------------------------------------+-----------
+ owning_user |                                                            | {}
+ postgres    | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ trponess    | Superuser, Create DB                                       | {}
+
+postgres=# 
+
+
 //redone another day 
  3246  cd co
  3247  virtualenv env -p python3

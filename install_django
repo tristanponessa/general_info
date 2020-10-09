@@ -160,6 +160,178 @@ postgres=#
  3293  sudo service postgresql start
  
  
+ postgres-# DELETE USER trponess;
+ERROR:  syntax error at or near "ALTER"
+LINE 2: ALTER USER trponess SUPERUSER CREATEDB
+        ^
+postgres=# ALTER USER new_username SUPERUSER CREATEDB;
+ALTER USER trponess SUPERUSER CREATEDB;
+ERROR:  role "new_username" does not exist
+ALTER ROLE
+postgres=#                                            
+ALTER USER trponess SUPERUSER CREATEDB;
+ALTER ROLE
+postgres=# \du
+                                    List of roles
+  Role name  |                         Attributes                         | Member of 
+-------------+------------------------------------------------------------+-----------
+ owning_user |                                                            | {}
+ postgres    | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ trponess    | Superuser, Create DB                                       | {}
+
+postgres=# \l
+                                   List of databases
+   Name    |    Owner    | Encoding |   Collate   |    Ctype    |   Access privileges   
+-----------+-------------+----------+-------------+-------------+-----------------------
+ dbname    | owning_user | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres  | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0 | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |             |          |             |             | postgres=CTc/postgres
+ template1 | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |             |          |             |             | postgres=CTc/postgres
+ testdb    | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+(5 rows)
+
+postgres=# dropdb template0 
+postgres-# \l
+                                   List of databases
+   Name    |    Owner    | Encoding |   Collate   |    Ctype    |   Access privileges   
+-----------+-------------+----------+-------------+-------------+-----------------------
+ dbname    | owning_user | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres  | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0 | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |             |          |             |             | postgres=CTc/postgres
+ template1 | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |             |          |             |             | postgres=CTc/postgres
+ testdb    | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+(5 rows)
+
+postgres-# dropdb template0; 
+ERROR:  syntax error at or near "dropdb"
+LINE 1: dropdb template0 
+        ^
+postgres=# dropdb 'template0'; 
+ERROR:  syntax error at or near "dropdb"
+LINE 1: dropdb 'template0';
+        ^
+postgres=# DROP DATABASE template0
+postgres-# ;
+ERROR:  cannot drop a template database
+postgres=#  alter database template0 is_template false;
+ALTER DATABASE
+postgres=# DROP DATABASE template0
+;
+DROP DATABASE
+postgres=# \l
+                                   List of databases
+   Name    |    Owner    | Encoding |   Collate   |    Ctype    |   Access privileges   
+-----------+-------------+----------+-------------+-------------+-----------------------
+ dbname    | owning_user | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres  | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template1 | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |             |          |             |             | postgres=CTc/postgres
+ testdb    | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+(4 rows)
+
+postgres=#  alter database template1 is_template false;
+ALTER DATABASE
+postgres=# DROP DATABASE template1
+;
+DROP DATABASE
+postgres=# \l
+                                 List of databases
+   Name   |    Owner    | Encoding |   Collate   |    Ctype    | Access privileges 
+----------+-------------+----------+-------------+-------------+-------------------
+ dbname   | owning_user | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ testdb   | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+(3 rows)
+
+postgres=# DROP DATABASE dbname;
+DROP DATABASE
+postgres=# \du
+                                    List of roles
+  Role name  |                         Attributes                         | Member of 
+-------------+------------------------------------------------------------+-----------
+ owning_user |                                                            | {}
+ postgres    | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ trponess    | Superuser, Create DB                                       | {}
+
+postgres=# \l
+                               List of databases
+   Name   |  Owner   | Encoding |   Collate   |    Ctype    | Access privileges 
+----------+----------+----------+-------------+-------------+-------------------
+ postgres | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ testdb   | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+(2 rows)
+
+postgres=# drop owner owning_user;
+ERROR:  syntax error at or near "owner"
+LINE 1: drop owner owning_user;
+             ^
+postgres=# DROPOWNER owning_user;
+ERROR:  syntax error at or near "DROPOWNER"
+LINE 1: DROPOWNER owning_user;
+        ^
+postgres=# DROP OWNER owning_user;
+ERROR:  syntax error at or near "OWNER"
+LINE 1: DROP OWNER owning_user;
+             ^
+postgres=# drop role owning_user;
+DROP ROLE
+postgres=# drop role trponess;
+DROP ROLE
+postgres=# \l
+                               List of databases
+   Name   |  Owner   | Encoding |   Collate   |    Ctype    | Access privileges 
+----------+----------+----------+-------------+-------------+-------------------
+ postgres | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ testdb   | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+(2 rows)
+
+postgres=# \d
+Did not find any relations.
+postgres=# \l
+                               List of databases
+   Name   |  Owner   | Encoding |   Collate   |    Ctype    | Access privileges 
+----------+----------+----------+-------------+-------------+-------------------
+ postgres | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ testdb   | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+(2 rows)
+
+postgres=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of 
+-----------+------------------------------------------------------------+-----------
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+postgres=# \l
+                               List of databases
+   Name   |  Owner   | Encoding |   Collate   |    Ctype    | Access privileges 
+----------+----------+----------+-------------+-------------+-------------------
+ postgres | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ testdb   | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+(2 rows)
+
+postgres=# DROP DATABASE postgres;
+ERROR:  cannot drop the currently open database
+postgres=# DROP DATABASE postgres with (force);
+ERROR:  syntax error at or near "with"
+LINE 1: DROP DATABASE postgres with (force);
+                               ^
+postgres=# DROP DATABASE postgres WITH (force);
+ERROR:  syntax error at or near "WITH"
+LINE 1: DROP DATABASE postgres WITH (force);
+                               ^
+postgres=# \q
+(env) ➜  django_env postgres -V                                    
+zsh: command not found: postgres
+(env) ➜  django_env psql -V
+psql (PostgreSQL) 10.14 (Ubuntu 10.14-0ubuntu0.18.04.1)
+(env) ➜  django_env 
+
+ 
+ 
  
  https://tableplus.com/blog/2018/10/how-to-start-stop-restart-postgresql-server.html
  https://stackoverflow.com/questions/16973018/createuser-could-not-connect-to-database-postgres-fatal-role-tom-does-not-e
